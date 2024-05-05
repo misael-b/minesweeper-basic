@@ -3,6 +3,7 @@ package com.example.backend.controllers;
 import com.example.backend.models.TableGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.TabExpander;
@@ -20,12 +21,14 @@ public class GameController {
     }
 
     @GetMapping
-    public String[] initiateGame(
-            @RequestParam int numOfBombs,@RequestParam int numOfSpaces
-    ){
+    public String[] initiateGame(@RequestParam int numOfBombs,@RequestParam int numOfSpaces){
         this.tableGenerator.generateBoard(numOfBombs, numOfSpaces);
         return tableGenerator.getBoard();
     }
 
+    @GetMapping("feedback")
+    public String userPickResult(@RequestParam int userPick){
+        return tableGenerator.getBoard()[userPick];
+    }
 
 }
