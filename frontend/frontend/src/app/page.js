@@ -7,19 +7,24 @@ export default function Home() {
   const [gameTable, setGameTable] = useState();
   const [sel, setSel] = useState("-");
   const [initialValue, setInitialValue] = useState(["-", "-", "-", "-", "-", "-", "-", "-", "-"])
-  const [counter, setCounter] = useState(0)
-  let btnRef = useRef()
+  const [isGameOver, setGameOver] = useState(false)
+
 
   function NewGame() {
-    // console.log("new game started")
+    setGameOver(false)
+    var popup = document.getElementById("BOMB");
+    popup.style.display = "none"
+    var popupWin = document.getElementById("WINNER");
+    popupWin.style.display = "none"
     axios.get("http://localhost:8080/game?numOfBombs=1&numOfSpaces=9").then(
       (res) => {
-        setGameTable(res.data)
-        console.log(res.data)
+        setAnsArray(results)
+        console.log(ansArray)
         var element = document.getElementById("startGame")
         var element2 = document.getElementById("restartGame")
         element.hidden = true
         element2.hidden = false
+        
       })
   }
 
@@ -29,31 +34,41 @@ export default function Home() {
       let string = i.toString()
       var row = document.getElementById(string)
       row.innerText = "-"
-      var popup = document.getElementById("myPopup");
-      popup.classList.toggle("show")
+      var popup = document.getElementById("BOMB");
+      popup.style.display = "none"
     }
   }
 
-  function nothing() {
-    
-  }
 
   function handleChoice(event) {
+    if (isGameOver === false) {
       axios.get("http://localhost:8080/game/feedback?userPick=" + event.target.id).then(
         (res) => {
-          if (res.data === "O") {
-            event.target.innerText = "O"
-            setCounter(counter + 1)
-            setSel(sel => sel + " ")
-            console.log(counter)
+          if (res.data === "Winner") {
+            setGameOver(true)
+            setSel(gameTable)
+            var popup = document.getElementById("WINNER");
+            popup.style.display = "block"
+            
           } else {
-            console.log("game over")
-            var popup = document.getElementById("myPopup");
-            popup.classList.toggle("show");
+            if (res.data === "O") {
+              event.target.innerText = "O"
+              setCounter(counter + 1)
+              setSel(sel => sel + " ")
+              console.log(counter)
+            } else {
+              setGameOver(true)
+              console.log("game over")
+              var popup = document.getElementById("BOMB");
+              popup.style.display = "block"
+            }
           }
+          
         }
-
       )
+      
+    }
+      
     
   }
 
@@ -66,51 +81,39 @@ export default function Home() {
         {(gameTable) && (sel) &&
           <table className='gameTable'>
             <tr>
-              <th onClick={handleChoice} id='0' ref={btnRef}>{initialValue[0]}</th>
-              <div class="popup" >
-                <span class="popuptext" id="myPopup">BOMB!</span>
-              </div>
+              <th onClick={handleChoice} id='0'>{initialValue[0]}</th>
               <th onClick={handleChoice} id='1'>{initialValue[1]}</th>
-              <div class="popup" >
-                <span class="popuptext" id="myPopup">BOMB!</span>
-              </div>
               <th onClick={handleChoice} id='2'>{initialValue[2]}</th>
-              <div class="popup" >
-                <span class="popuptext" id="myPopup">BOMB!</span>
-              </div>
             </tr>
 
             <tr>
               <th onClick={handleChoice} id='3'>{initialValue[3]}</th>
-              <div class="popup" >
-                <span class="popuptext" id="myPopup">BOMB!</span>
-              </div>
               <th onClick={handleChoice} id='4'>{initialValue[4]}</th>
-              <div class="popup" >
-                <span class="popuptext" id="myPopup">BOMB!</span>
-              </div>
               <th onClick={handleChoice} id='5'>{initialValue[5]}</th>
-              <div class="popup" >
-                <span class="popuptext" id="myPopup">BOMB!</span>
-              </div>
             </tr>
 
             <tr>
               <th onClick={handleChoice} id='6'>{initialValue[6]}</th>
-              <div class="popup" >
-                <span class="popuptext" id="myPopup">BOMB!</span>
-              </div>
               <th onClick={handleChoice} id='7'>{initialValue[7]}</th>
-              <div class="popup" >
-                <span class="popuptext" id="myPopup">BOMB!</span>
-              </div>
               <th onClick={handleChoice} id='8'>{initialValue[8]}</th>
-              <div class="popup" >
-                <span class="popuptext" id="myPopup">BOMB!</span>
-              </div>
             </tr>
           
           </table>}
+      </div>
+      
+      <div class='BOMB' id="BOMB"
+        style={{ display: "none" }}
+      >
+        <p>BOMB!</p>
+        <p>GAME OVER!</p>
+        <button onClick={restartGame}>New Game?</button>
+      </div>
+
+      <div class='WINNER' id="WINNER"
+        style={{ display: "none" }}
+      >
+        <p>YOU WON!</p>
+        <button onClick={restartGame}>New Game?</button>
       </div>
       
     </main>

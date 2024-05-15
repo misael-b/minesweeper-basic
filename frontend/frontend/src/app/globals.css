@@ -11,51 +11,28 @@
   
 }
 
-.popup {
-  position: relative;
-  display: inline-block;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/* The actual popup */
-.popup .popuptext {
-  visibility: hidden;
-  width: 210px;
+.BOMB{
   background-color: red;
-  color: #fff;
-  text-align: center;
+  color: white;
+  /* margin-left: auto; */
+  /* margin-right: auto; */
   position: absolute;
-  margin-left: auto;
-  margin-right: auto;
+  width: 50%;
+  top:40%;
+  left: 30%;
+  right: 30%;
+  width: 600px;
 }
 
-/* Toggle this class - hide and show the popup */
-.popup .show {
-  visibility: visible;
-  -webkit-animation: fadeIn 1s;
-  animation: fadeIn 1s;
-}
-
-/* Add animation (fade in the popup) */
-@-webkit-keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+.WINNER {
+  background-color: green;
+  color: white;
+  /* margin-left: auto; */
+  /* margin-right: auto; */
+  position: absolute;
+  width: 50%;
+  top: 40%;
+  left: 30%;
+  right: 30%;
+  width: 600px;
 }
