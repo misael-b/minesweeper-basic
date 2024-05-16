@@ -6,20 +6,40 @@ import axios from "axios";
 export default function Home() {
   const [gameTable, setGameTable] = useState();
   const [sel, setSel] = useState("-");
-  const [initialValue, setInitialValue] = useState(["-", "-", "-", "-", "-", "-", "-", "-", "-"])
+  const [mediumGame, setMediumGame] = useState(["-", "-", "-", "-", "-",
+    "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
+    "-", "-", "-", "-", "-", "-", "-",])
   const [isGameOver, setGameOver] = useState(false)
+  var lengthOfArray;
+  
 
 
   function NewGame() {
     setGameOver(false)
+    var difficulty = document.getElementById("difficulty");
+    var numOfBombs;
+    var numOfSpaces;
+
+    if (difficulty.value === "easy") {
+      numOfBombs = 1;
+      numOfSpaces = 9;
+    } else if (difficulty.value === "medium") {
+      numOfBombs = 3;
+      numOfSpaces = 25;
+    } else {
+      numOfBombs = 5;
+      numOfSpaces = 36
+    }
     var popup = document.getElementById("BOMB");
     popup.style.display = "none"
     var popupWin = document.getElementById("WINNER");
     popupWin.style.display = "none"
-    axios.get("http://localhost:8080/game?numOfBombs=1&numOfSpaces=9").then(
+    axios.get("http://localhost:8080/game?numOfBombs=" + numOfBombs + "&numOfSpaces=" + numOfSpaces ).then(
       (res) => {
-        setAnsArray(results)
-        console.log(ansArray)
+        lengthOfArray = res.data.length
+        console.log(lengthOfArray)
+        setGameTable(res.data)
+        console.log(res.data)
         var element = document.getElementById("startGame")
         var element2 = document.getElementById("restartGame")
         element.hidden = true
@@ -30,10 +50,12 @@ export default function Home() {
 
   function restartGame() {
     NewGame()
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 36; i++) {
       let string = i.toString()
       var row = document.getElementById(string)
-      row.innerText = "-"
+      if (row !== null) {
+        row.innerText = "-"
+      }
       var popup = document.getElementById("BOMB");
       popup.style.display = "none"
     }
@@ -41,6 +63,7 @@ export default function Home() {
 
 
   function handleChoice(event) {
+    console.log(mediumGame.length)
     if (isGameOver === false) {
       axios.get("http://localhost:8080/game/feedback?userPick=" + event.target.id).then(
         (res) => {
@@ -53,9 +76,7 @@ export default function Home() {
           } else {
             if (res.data === "O") {
               event.target.innerText = "O"
-              setCounter(counter + 1)
               setSel(sel => sel + " ")
-              console.log(counter)
             } else {
               setGameOver(true)
               console.log("game over")
@@ -76,28 +97,87 @@ export default function Home() {
     <main>
       <div>
         <h1>MINESWEEPER (BASIC)</h1>
-        <button onClick={NewGame} id='startGame'>NEW GAME</button>
+        <label for="difficulty">Choose a Difficulty:  </label>
+        <form>
+          <select name="difficulty" id="difficulty">
+            <option value="easy">Easy - 3x3 - "1 bomb" </option>
+            <option value="medium">Medium - 5x5 - "3 bombs"</option>
+            <option value="hard">Hard  - 6x6 - "5 bombs"</option>
+          </select>
+        </form>
+        
+          <br/>
+
+          <button onClick={NewGame} id='startGame'>NEW GAME</button>
+        
         <button onClick={restartGame} id='restartGame' hidden='true'>RESTART GAME</button>
-        {(gameTable) && (sel) &&
+        {(gameTable) && (sel) && (document.getElementById("difficulty").value === "easy") &&
           <table className='gameTable'>
+            {document.getElementById("difficulty").value === "easy" && 
+              <tr>
+                <th onClick={handleChoice} id='0'>-</th>
+                <th onClick={handleChoice} id='1'>-</th>
+                <th onClick={handleChoice} id='2'>-</th>
+              </tr>}
+
             <tr>
-              <th onClick={handleChoice} id='0'>{initialValue[0]}</th>
-              <th onClick={handleChoice} id='1'>{initialValue[1]}</th>
-              <th onClick={handleChoice} id='2'>{initialValue[2]}</th>
+              <th onClick={handleChoice} id='3'>-</th>
+              <th onClick={handleChoice} id='4'>-</th>
+              <th onClick={handleChoice} id='5'>-</th>
             </tr>
 
             <tr>
-              <th onClick={handleChoice} id='3'>{initialValue[3]}</th>
-              <th onClick={handleChoice} id='4'>{initialValue[4]}</th>
-              <th onClick={handleChoice} id='5'>{initialValue[5]}</th>
-            </tr>
-
-            <tr>
-              <th onClick={handleChoice} id='6'>{initialValue[6]}</th>
-              <th onClick={handleChoice} id='7'>{initialValue[7]}</th>
-              <th onClick={handleChoice} id='8'>{initialValue[8]}</th>
+              <th onClick={handleChoice} id='6'>-</th>
+              <th onClick={handleChoice} id='7'>-</th>
+              <th onClick={handleChoice} id='8'>-</th>
             </tr>
           
+          </table>}
+        
+
+
+        {(gameTable) && (sel) && (document.getElementById("difficulty").value === "medium") &&
+          <table className='gameTable'>
+              <tr>
+                <th onClick={handleChoice} id='0'>-</th>
+                <th onClick={handleChoice} id='1'>-</th>
+                <th onClick={handleChoice} id='2'>-</th>
+                <th onClick={handleChoice} id='3'>-</th>
+                <th onClick={handleChoice} id='4'>-</th>
+              </tr>
+
+            <tr>
+              <th onClick={handleChoice} id='5'>-</th>
+              <th onClick={handleChoice} id='6'>-</th>
+              <th onClick={handleChoice} id='7'>-</th>
+              <th onClick={handleChoice} id='8'>-</th>
+              <th onClick={handleChoice} id='9'>-</th>
+            </tr>
+
+            <tr>
+              <th onClick={handleChoice} id='10'>-</th>
+              <th onClick={handleChoice} id='11'>-</th>
+              <th onClick={handleChoice} id='12'>-</th>
+              <th onClick={handleChoice} id='13'>-</th>
+              <th onClick={handleChoice} id='14'>-</th>
+            </tr>
+
+            <tr>
+              <th onClick={handleChoice} id='15'>-</th>
+              <th onClick={handleChoice} id='16'>-</th>
+              <th onClick={handleChoice} id='17'>-</th>
+              <th onClick={handleChoice} id='18'>-</th>
+              <th onClick={handleChoice} id='19'>-</th>
+            </tr>
+
+            <tr>
+              <th onClick={handleChoice} id='20'>-</th>
+              <th onClick={handleChoice} id='21'>-</th>
+              <th onClick={handleChoice} id='22'>-</th>
+              <th onClick={handleChoice} id='23'>-</th>
+              <th onClick={handleChoice} id='24'>-</th>
+            </tr>
+
           </table>}
       </div>
       
