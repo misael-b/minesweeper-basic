@@ -15,6 +15,7 @@ public class GameController {
     private ArrayList<Integer> numbers = new ArrayList<>();
 
     private int numOfSpaces;
+    private int numOfBombs;
 
     @Autowired
     public GameController(TableGenerator tableGenerator) {
@@ -24,6 +25,7 @@ public class GameController {
     @GetMapping
     public String[] initiateGame(@RequestParam int numOfBombs,@RequestParam int numOfSpaces){
         this.numOfSpaces = numOfSpaces;
+        this.numOfBombs = numOfBombs;
         numbers = new ArrayList<>();
         this.tableGenerator.generateBoard(numOfBombs, numOfSpaces);
         return tableGenerator.getBoard();
@@ -34,7 +36,7 @@ public class GameController {
         if(!numbers.contains(userPick)){
             numbers.add(userPick);
         }
-        if(numbers.size() == numOfSpaces - 1){
+        if(numbers.size() == numOfSpaces - numOfBombs){
             return "Winner";
         }
 
