@@ -63,7 +63,6 @@ export default function Home() {
   async function returnScore() {
     await axios.get("http://localhost:8080/game/score").then(
       (res) => { 
-        console.log(res.data)
         setScore(res.data)
 
       })
