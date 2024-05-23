@@ -43,4 +43,10 @@ public class GameController {
         return tableGenerator.getBoard()[userPick];
     }
 
+    @GetMapping("score")
+    public double returnScore(){
+        return Math.random();
+    }
+
+
 }

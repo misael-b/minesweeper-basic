@@ -10,6 +10,7 @@ export default function Home() {
     "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
     "-", "-", "-", "-", "-", "-", "-",])
   const [isGameOver, setGameOver] = useState(false)
+  const [score, setScore] = useState(0)
   var lengthOfArray;
   
 
@@ -19,6 +20,7 @@ export default function Home() {
     var difficulty = document.getElementById("difficulty");
     var numOfBombs = document.getElementById("numOfBombs");
     var numOfSpaces;
+    returnScore()
 
     if (difficulty.value === "easy") {
       numOfSpaces = 36;
@@ -46,6 +48,7 @@ export default function Home() {
 
   function restartGame() {
     NewGame()
+    returnScore()
     for (let i = 0; i < 36; i++) {
       let string = i.toString()
       var row = document.getElementById(string)
@@ -55,6 +58,15 @@ export default function Home() {
       var popup = document.getElementById("BOMB");
       popup.style.display = "none"
     }
+  }
+
+  async function returnScore() {
+    await axios.get("http://localhost:8080/game/score").then(
+      (res) => { 
+        console.log(res.data)
+        setScore(res.data)
+
+      })
   }
 
 
@@ -93,6 +105,10 @@ export default function Home() {
     <main>
       <div>
         <h1>MINESWEEPER (BASIC)</h1>
+        <div className='score'>
+          <h2>Current Score: </h2>
+          <p>{score}</p>
+        </div>
         <label for="difficulty">Choose a Difficulty:  </label>
         <form>
           <select name="difficulty" id="difficulty">

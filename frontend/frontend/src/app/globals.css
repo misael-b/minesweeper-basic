@@ -36,3 +36,14 @@
   right: 30%;
   width: 600px;
 }
+
+.score {
+  position: absolute;
+  top: 0%;
+  right: 5%;
+  p{
+    text-align: right;
+    color: green;
+  }
+
+}
