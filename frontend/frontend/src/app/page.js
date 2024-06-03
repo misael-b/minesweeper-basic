@@ -108,7 +108,7 @@ export default function Home() {
           <h2>Current Score: </h2>
           <p>{score}</p>
         </div>
-        <label for="difficulty">Choose a Difficulty:  </label>
+        <label>Choose a Difficulty:  </label>
         <form>
           <select name="difficulty" id="difficulty">
             <option value="hard">Hard - 3x3</option>
@@ -117,7 +117,7 @@ export default function Home() {
           </select>
         </form>
 
-        <label for="numOfBombs">Choose Number Of Bombs:  </label>
+        <label>Choose Number Of Bombs:  </label>
         <form>
           <select name="numOfBombs" id="numOfBombs">
             <option value="1">1 bomb</option>

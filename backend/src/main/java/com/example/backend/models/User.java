@@ -1,8 +1,6 @@
 package com.example.backend.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class User {
@@ -14,9 +12,13 @@ public class User {
 
     private String password;
 
-    public User(String username, String password) {
+    @OneToOne(cascade= CascadeType.ALL)
+    private GameScore gameScore;
+
+    public User(String username, String password, GameScore gameScore) {
         this.username = username;
         this.password = password;
+        this.gameScore = gameScore;
     }
 
     public User() {
@@ -36,5 +38,17 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public GameScore getGameScore() {
+        return gameScore;
+    }
+
+    public void setGameScore(GameScore gameScore) {
+        this.gameScore = gameScore;
+    }
+
+    public void addToScore(double score){
+        this.gameScore.setScore(score);
     }
 }

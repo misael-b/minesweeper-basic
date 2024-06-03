@@ -2,6 +2,8 @@ package com.example.backend.controllers;
 
 import com.example.backend.models.GameScore;
 import com.example.backend.models.TableGenerator;
+import com.example.backend.models.User;
+import com.example.backend.models.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,11 +12,9 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("game")
-@CrossOrigin("http://localhost:3001/")
+@CrossOrigin("http://localhost:3000/")
 public class GameController {
     private TableGenerator tableGenerator;
-
-    private GameScore gameScore;
 
     private String gameDifficulty;
 
@@ -25,10 +25,15 @@ public class GameController {
     private int numOfSpaces;
     private int numOfBombs;
 
+    private UserController userController;
+
+    UserRepository userRepository;
+
     @Autowired
-    public GameController(TableGenerator tableGenerator, GameScore gameScore) {
-        this.gameScore = gameScore;
+    public GameController(TableGenerator tableGenerator, UserController userController, UserRepository userRepository) {
         this.tableGenerator = tableGenerator;
+        this.userController = userController;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -65,16 +70,24 @@ public class GameController {
         }
 
         if(Objects.equals(tableGenerator.getBoard()[userPick], "O")){
-            this.gameScore.setScore(1*gameScoreMultiplier);
+            User loggedInUser = this.userController.getLoggedInUser();
+            loggedInUser.addToScore(1*gameScoreMultiplier);
+//            this.gameScore.setScore(1*gameScoreMultiplier);
         }
 
         if(numbers.size() == numOfSpaces - numOfBombs){
             if(this.gameDifficulty.equals("hard")){
-                this.gameScore.setScore(1000);
+                User loggedInUser = this.userController.getLoggedInUser();
+                loggedInUser.addToScore(1000);
+//                this.gameScore.setScore(1000);
             }else if (this.gameDifficulty.equals("medium")){
-                this.gameScore.setScore(500);
+                User loggedInUser = this.userController.getLoggedInUser();
+                loggedInUser.addToScore(500);
+//                this.gameScore.setScore(500);
             }else {
-                this.gameScore.setScore(250);
+                User loggedInUser = this.userController.getLoggedInUser();
+                loggedInUser.addToScore(250);
+//                this.gameScore.setScore(250);
             }
             return "Winner";
         }
@@ -84,7 +97,9 @@ public class GameController {
 
     @GetMapping("score")
     public double returnScore(){
-        return this.gameScore.getScore();
+        User loggedInUser = this.userController.getLoggedInUser();
+        userRepository.save(loggedInUser);
+        return loggedInUser.getGameScore().getScore();
     }
 
 
