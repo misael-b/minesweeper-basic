@@ -61,11 +61,16 @@ export default function Home() {
   }
 
   async function returnScore() {
-    await axios.get("http://localhost:8080/game/score").then(
-      (res) => { 
-        setScore(res.data)
+    try {
+      await axios.get("http://localhost:8080/game/score").then(
+        (res) => {
+          setScore(res.data)
 
-      })
+        })
+    } catch {
+      console.log("not logged in!")
+    }
+    
   }
 
 
@@ -97,7 +102,12 @@ export default function Home() {
       
     }
       
-    
+  }
+
+  async function handleLogout() {
+    await axios.get("http://localhost:8080/user/logout").then(
+      console.log("user logged out")
+    )
   }
 
   return (
@@ -107,6 +117,7 @@ export default function Home() {
         <div className='score'>
           <h2>Current Score: </h2>
           <p>{score}</p>
+          <button onClick={handleLogout}>Logout</button>
         </div>
         <label>Choose a Difficulty:  </label>
         <form>
