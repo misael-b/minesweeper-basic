@@ -1,9 +1,11 @@
 'use client';
 import React, { useRef, useState } from 'react'
 import axios from "axios";
+import { minesweeper } from '../actions';
 
 const page = () => { 
     const [login, setLogin] = useState({ username: "", password: "" })
+    const[errors, setErrors] = useState(false)
     
     const payload = {
         username: login.username,
@@ -23,9 +25,12 @@ const page = () => {
                         'Content-Type': 'application/json',
                     },
                 })
+            if (response.status === 200) {
+                minesweeper()
+            }
             }
         catch (e) {
-            console.log("Incorrect Credentials, Try Again")
+            setErrors(true)
 
         }
 
@@ -33,6 +38,7 @@ const page = () => {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
+        setErrors(false)
         setLogin(prevUser => ({ ...prevUser, [name]: value }));
     };
 
@@ -49,6 +55,7 @@ const page = () => {
                 
                 <button type="submit">Login</button>
             </form> 
+            {errors && <p style={{ color: "red" }}>Invalid Credentials</p>}
         </div>
     )
 }

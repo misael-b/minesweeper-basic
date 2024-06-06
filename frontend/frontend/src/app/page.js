@@ -1,6 +1,7 @@
 'use client';
 import React, { useRef, useState } from 'react'
 import axios from "axios";
+import { login} from './actions';
 
 
 export default function Home() {
@@ -8,11 +9,15 @@ export default function Home() {
   const [sel, setSel] = useState("-");
   const [isGameOver, setGameOver] = useState(false)
   const [score, setScore] = useState(0)
+  const [loggedIn, setLoggedIn] = useState(false)
   var lengthOfArray;
-  
+  returnScore()
 
 
   function NewGame() {
+    // try {
+      
+    // }
     setGameOver(false)
     var difficulty = document.getElementById("difficulty");
     var numOfBombs = document.getElementById("numOfBombs");
@@ -67,7 +72,7 @@ export default function Home() {
 
         })
     } catch {
-      console.log("not logged in!")
+      login()
     }
     
   }
@@ -103,9 +108,9 @@ export default function Home() {
 
   async function handleLogout() {
     await axios.get("http://localhost:8080/user/logout").then(
-      // TODO: redirect to login page
       console.log("user logged out")
     )
+    login()
   }
 
   async function saveScore() {

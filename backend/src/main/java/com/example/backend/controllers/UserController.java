@@ -40,11 +40,12 @@ public class UserController {
     public ResponseEntity<String> login(@RequestBody RegisterDTO registerDTO){
         if (userRepository.existsByUsername(registerDTO.getUsername())){
             User user = userRepository.findByUsername(registerDTO.getUsername()).get();
-            if (user.getPassword().equals(registerDTO.getPassword())){
+            if (user.getPassword().equals(registerDTO.getPassword())) {
                 this.loggedInUser = user;
+                return new ResponseEntity<>("User logged in", HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>("User logged in", HttpStatus.OK);
+        return new ResponseEntity<>("Bad credentials", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("logout")
