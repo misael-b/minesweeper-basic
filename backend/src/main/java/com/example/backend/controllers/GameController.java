@@ -69,23 +69,20 @@ public class GameController {
             numbers.add(userPick);
         }
 
-        if(Objects.equals(tableGenerator.getBoard()[userPick], "O")){
-            User loggedInUser = this.userController.getLoggedInUser();
-            loggedInUser.addToScore(1*gameScoreMultiplier);
-//            this.gameScore.setScore(1*gameScoreMultiplier);
-        }
-
         if(numbers.size() == numOfSpaces - numOfBombs){
             if(this.gameDifficulty.equals("hard")){
                 User loggedInUser = this.userController.getLoggedInUser();
                 loggedInUser.addToScore(1000);
+                loggedInUser.addToScore(numbers.size()*gameScoreMultiplier);
 //                this.gameScore.setScore(1000);
             }else if (this.gameDifficulty.equals("medium")){
                 User loggedInUser = this.userController.getLoggedInUser();
+                loggedInUser.addToScore(numbers.size()*gameScoreMultiplier);
                 loggedInUser.addToScore(500);
 //                this.gameScore.setScore(500);
             }else {
                 User loggedInUser = this.userController.getLoggedInUser();
+                loggedInUser.addToScore(numbers.size()*gameScoreMultiplier);
                 loggedInUser.addToScore(250);
 //                this.gameScore.setScore(250);
             }
@@ -100,6 +97,12 @@ public class GameController {
         User loggedInUser = this.userController.getLoggedInUser();
         userRepository.save(loggedInUser);
         return loggedInUser.getGameScore().getScore();
+    }
+
+    @GetMapping("endGame")
+    public void endGame(){
+        User loggedInUser = this.userController.getLoggedInUser();
+        loggedInUser.addToScore(numbers.size()*gameScoreMultiplier);
     }
 
 

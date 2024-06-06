@@ -75,7 +75,7 @@ export default function Home() {
 
 
   function handleChoice(event) {
-    console.log(mediumGame.length)
+    // console.log(mediumGame.length)
     if (isGameOver === false) {
       axios.get("http://localhost:8080/game/feedback?userPick=" + event.target.id).then(
         (res) => {
@@ -110,6 +110,13 @@ export default function Home() {
     )
   }
 
+  async function saveScore() {
+    await axios.get("http://localhost:8080/game/endGame").then(
+      console.log("score saved")
+    )
+    restartGame()
+  }
+
   return (
     <main>
       <div>
@@ -139,7 +146,9 @@ export default function Home() {
         
           <br/>
 
-          <button onClick={NewGame} id='startGame'>NEW GAME</button>
+        <button onClick={NewGame} id='startGame'>NEW GAME</button>
+
+        <button onClick={saveScore} id='saveScore'>END GAME</button>
         
         <button onClick={restartGame} id='restartGame' hidden='true'>RESTART GAME</button>
         {(gameTable) && (sel) && (document.getElementById("difficulty").value === "hard") &&
