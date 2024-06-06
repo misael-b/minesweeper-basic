@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import { login} from './actions';
 
@@ -9,15 +9,22 @@ export default function Home() {
   const [sel, setSel] = useState("-");
   const [isGameOver, setGameOver] = useState(false)
   const [score, setScore] = useState(0)
-  const [loggedIn, setLoggedIn] = useState(false)
   var lengthOfArray;
-  returnScore()
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/user/isLoggedIn").then(
+      (res) => { 
+        if (res.data === false) {
+          login()
+        }
+        returnScore()
+      }
+      )
+
+   },[])
 
 
   function NewGame() {
-    // try {
-      
-    // }
     setGameOver(false)
     var difficulty = document.getElementById("difficulty");
     var numOfBombs = document.getElementById("numOfBombs");

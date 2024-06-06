@@ -54,6 +54,14 @@ public class UserController {
         return new ResponseEntity<>("User logged out", HttpStatus.OK);
     }
 
+    @GetMapping("isLoggedIn")
+    public boolean isLoggedIn(){
+        if (this.loggedInUser == null){
+            return false;
+        }
+        return true;
+    }
+
     public User getLoggedInUser() {
         return loggedInUser;
     }

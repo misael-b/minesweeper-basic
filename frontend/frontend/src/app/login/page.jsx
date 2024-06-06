@@ -14,7 +14,6 @@ const page = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(login)
         try {
             const response = await axios.post(
                 'http://localhost:8080/user/login',
