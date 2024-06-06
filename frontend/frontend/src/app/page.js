@@ -6,9 +6,6 @@ import axios from "axios";
 export default function Home() {
   const [gameTable, setGameTable] = useState();
   const [sel, setSel] = useState("-");
-  const [mediumGame, setMediumGame] = useState(["-", "-", "-", "-", "-",
-    "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
-    "-", "-", "-", "-", "-", "-", "-",])
   const [isGameOver, setGameOver] = useState(false)
   const [score, setScore] = useState(0)
   var lengthOfArray;
@@ -40,8 +37,10 @@ export default function Home() {
         console.log(res.data)
         var element = document.getElementById("startGame")
         var element2 = document.getElementById("restartGame")
+        var element3 = document.getElementById("saveScore")
         element.hidden = true
         element2.hidden = false
+        element3.hidden = false
         
       })
   }
@@ -75,7 +74,6 @@ export default function Home() {
 
 
   function handleChoice(event) {
-    // console.log(mediumGame.length)
     if (isGameOver === false) {
       axios.get("http://localhost:8080/game/feedback?userPick=" + event.target.id).then(
         (res) => {
@@ -91,7 +89,6 @@ export default function Home() {
               setSel(sel => sel + " ")
             } else {
               setGameOver(true)
-              console.log("game over")
               var popup = document.getElementById("BOMB");
               popup.style.display = "block"
             }
@@ -106,6 +103,7 @@ export default function Home() {
 
   async function handleLogout() {
     await axios.get("http://localhost:8080/user/logout").then(
+      // TODO: redirect to login page
       console.log("user logged out")
     )
   }
@@ -148,9 +146,9 @@ export default function Home() {
 
         <button onClick={NewGame} id='startGame'>NEW GAME</button>
 
-        <button onClick={saveScore} id='saveScore'>END GAME</button>
+        <button onClick={saveScore} id='saveScore' hidden={true}>END GAME</button>
         
-        <button onClick={restartGame} id='restartGame' hidden='true'>RESTART GAME</button>
+        <button onClick={restartGame} id='restartGame' hidden={true}>RESTART GAME</button>
         {(gameTable) && (sel) && (document.getElementById("difficulty").value === "hard") &&
           <table className='gameTable'>
             {document.getElementById("difficulty").value === "hard" && 
@@ -277,7 +275,7 @@ export default function Home() {
           </table>}
       </div>
       
-      <div class='BOMB' id="BOMB"
+      <div className='BOMB' id="BOMB"
         style={{ display: "none" }}
       >
         <p>BOMB!</p>
@@ -285,7 +283,7 @@ export default function Home() {
         <button onClick={restartGame}>New Game?</button>
       </div>
 
-      <div class='WINNER' id="WINNER"
+      <div className='WINNER' id="WINNER"
         style={{ display: "none" }}
       >
         <p>YOU WON!</p>

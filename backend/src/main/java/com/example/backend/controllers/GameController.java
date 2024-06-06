@@ -1,6 +1,5 @@
 package com.example.backend.controllers;
 
-import com.example.backend.models.GameScore;
 import com.example.backend.models.TableGenerator;
 import com.example.backend.models.User;
 import com.example.backend.models.data.UserRepository;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("game")
@@ -74,17 +72,14 @@ public class GameController {
                 User loggedInUser = this.userController.getLoggedInUser();
                 loggedInUser.addToScore(1000);
                 loggedInUser.addToScore(numbers.size()*gameScoreMultiplier);
-//                this.gameScore.setScore(1000);
             }else if (this.gameDifficulty.equals("medium")){
                 User loggedInUser = this.userController.getLoggedInUser();
                 loggedInUser.addToScore(numbers.size()*gameScoreMultiplier);
                 loggedInUser.addToScore(500);
-//                this.gameScore.setScore(500);
             }else {
                 User loggedInUser = this.userController.getLoggedInUser();
                 loggedInUser.addToScore(numbers.size()*gameScoreMultiplier);
                 loggedInUser.addToScore(250);
-//                this.gameScore.setScore(250);
             }
             return "Winner";
         }
