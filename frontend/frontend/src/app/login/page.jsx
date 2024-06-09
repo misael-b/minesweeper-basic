@@ -43,6 +43,7 @@ const page = () => {
 
     return (
         <div>
+            <h1>Login</h1>
             <form onSubmit={handleSubmit} id='form'>
                 <label>Username:</label><br />
                 <input type="text" id="username" name="username" value={login.username}
@@ -54,6 +55,7 @@ const page = () => {
                 
                 <button type="submit">Login</button>
             </form> 
+            <p>Don't have an account? <a href='http://localhost:3000/register'>Sign up</a></p>
             {errors && <p style={{ color: "red" }}>Invalid Credentials</p>}
         </div>
     )

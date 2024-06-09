@@ -53,6 +53,7 @@ const page = () => {
     
     return (
         <div>
+            <h1>Register: </h1>
             <form onSubmit={handleSubmit} id='form'>
                 <label>Username:</label><br/>
                 <input type="text" id="username" name="username" value={register.username}

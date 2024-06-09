@@ -90,8 +90,13 @@ public class GameController {
     @GetMapping("score")
     public double returnScore(){
         User loggedInUser = this.userController.getLoggedInUser();
-        userRepository.save(loggedInUser);
-        return loggedInUser.getGameScore().getScore();
+        if(loggedInUser != null){
+            userRepository.save(loggedInUser);
+            return loggedInUser.getGameScore().getScore();
+        }else{
+            return -1;
+        }
+
     }
 
     @GetMapping("endGame")
