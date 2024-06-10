@@ -16,7 +16,8 @@ const page = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(register)
+        console.log(register);
+        // add validatation to not accept empty fields
         try {
             if (register.password === register.verifyPassword) {
                 const response = await axios.post(
@@ -52,25 +53,34 @@ const page = () => {
 
     
     return (
-        <div>
+        <div className='login'>
             <h1>Register: </h1>
-            <form onSubmit={handleSubmit} id='form'>
-                <label>Username:</label><br/>
-                <input type="text" id="username" name="username" value={register.username}
-                    onChange={handleChange} /> <br />
+            <form onSubmit={handleSubmit} id='form' className='formLogin'>
+
+                <div className="text_area">
+                    <label>Username:</label><br />
+                    <input type="text" id="username" name="username" value={register.username}
+                        onChange={handleChange} /> <br />
+                </div><br />
+
+                <div className="text_area">
+                    <label>Password:</label> <br />
+                    <input type="password" id="password" name="password" value={register.password}
+                        onChange={handleChange} /> <br />
+                </div><br />
+
+                <div className="text_area">
+                    <label>Verify Password:</label> <br />
+                    <input type="password" id="verifyPassword" name="verifyPassword" value={register.verifyPassword}
+                        onChange={handleChange} /> 
+                </div>
                 
-                <label>Password:</label> <br/>
-                <input type="password" id="password" name="password" value={register.password}
-                    onChange={handleChange} /> <br />
-                
-                <label>Verify Password:</label> <br />
-                <input type="password" id="verifyPassword" name="verifyPassword" value={register.verifyPassword}
-                    onChange={handleChange} /> <br /><br />
-                
-                <button type="submit">Submit</button>
+                <button type="submit" className="btn">Submit</button>
+                {errors && <p style={{ color: "red" }}>Username Already Exists! Enter Another Username.</p>}
+                {errorsPassword && <p style={{ color: "red" }}>Passwords Do Not Match. Try Again.</p>}
             </form> 
-            {errors && <p style={{ color: "red" }}>Username Already Exists! Enter Another Username.</p>}
-            {errorsPassword && <p style={{ color: "red" }}>Passwords Do Not Match. Try Again.</p>}
+            <p>Already have an account? Sign in <a href='http://localhost:3000/login'>here</a></p>
+            
         </div>
     )
  }

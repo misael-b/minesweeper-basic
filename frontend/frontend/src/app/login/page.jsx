@@ -42,21 +42,34 @@ const page = () => {
     };
 
     return (
-        <div>
+        <div className='login'>
             <h1>Login</h1>
-            <form onSubmit={handleSubmit} id='form'>
-                <label>Username:</label><br />
-                <input type="text" id="username" name="username" value={login.username}
-                    onChange={handleChange} /> <br />
+            <form onSubmit={handleSubmit} id='form' className='formLogin'>
 
-                <label>Password:</label> <br />
-                <input type="password" id="password" name="password" value={login.password}
-                    onChange={handleChange} /> <br />
+                <div className="text_area">
+                    
+                    <label className='text'>Username:</label><br />
+                    <input type="text" id="username" name="username" value={login.username}
+                        onChange={handleChange} /> <br />
+                </div>
+                <br />
+
                 
-                <button type="submit">Login</button>
+                <div className="text_area">
+                    <label>Password:</label> <br />
+                    <input type="password" id="password" name="password" value={login.password}
+                        onChange={handleChange} /> <br />
+                </div>
+
+                
+                <div>
+                    <button type="submit" className="btn">Login</button>
+                </div>
+                {errors && <p style={{ color: "red" }}>Invalid Credentials</p>}
+                
             </form> 
             <p>Don't have an account? <a href='http://localhost:3000/register'>Sign up</a></p>
-            {errors && <p style={{ color: "red" }}>Invalid Credentials</p>}
+            
         </div>
     )
 }
