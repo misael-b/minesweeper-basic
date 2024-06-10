@@ -33,6 +33,7 @@ public class UserController {
         GameScore gameScore = new GameScore();
         user.setGameScore(gameScore);
         userRepository.save(user);
+        this.loggedInUser = user;
         return new ResponseEntity<>("User registered success", HttpStatus.OK);
     }
 

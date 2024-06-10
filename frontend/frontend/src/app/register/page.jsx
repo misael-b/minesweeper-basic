@@ -1,12 +1,14 @@
 'use client';
 import React, { useRef, useState } from 'react'
 import axios from "axios";
+import { minesweeper } from '../actions';
 
 
 const page = () => {
     const [register, setRegister] = useState({ username: "", password: "" , verifyPassword: ""})
     const [errors, setErrors] = useState(false)
     const [errorsPassword, setErrorsPassword] = useState(false)
+    const [errorsNull, setErrorsNull] = useState(false)
 
     const payload = {
         username: register.username,
@@ -17,22 +19,30 @@ const page = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(register);
-        // add validatation to not accept empty fields
         try {
-            if (register.password === register.verifyPassword) {
-                const response = await axios.post(
-                    'http://localhost:8080/user/register',
-                    payload,
-                    {
-                        headers: {
-                            accept: "*/*",
-                            'Content-Type': 'application/json',
-                        },
-                    }
-                )
+            if (register.username.trim() === "" || register.password.trim() === "" || register.verifyPassword.trim() === "") {
+                setErrorsNull(true)
             } else {
-                setErrorsPassword(true)
+                if (register.password === register.verifyPassword) {
+                    const response = await axios.post(
+                        'http://localhost:8080/user/register',
+                        payload,
+                        {
+                            headers: {
+                                accept: "*/*",
+                                'Content-Type': 'application/json',
+                            },
+                        }
+                    )
+                    if (response.status === 200) {
+                        minesweeper()
+                    }
+
+                } else {
+                    setErrorsPassword(true)
+                }
             }
+            
             
         } catch (e) {
             console.log("username already exists")
@@ -46,6 +56,7 @@ const page = () => {
     const handleChange = (event) => {
         setErrors(false)
         setErrorsPassword(false)
+        setErrorsNull(false)
         const { name, value } = event.target;
         setRegister(prevUser => ({ ...prevUser, [name]: value }));
     };
@@ -78,6 +89,7 @@ const page = () => {
                 <button type="submit" className="btn">Submit</button>
                 {errors && <p style={{ color: "red" }}>Username Already Exists! Enter Another Username.</p>}
                 {errorsPassword && <p style={{ color: "red" }}>Passwords Do Not Match. Try Again.</p>}
+                {errorsNull && <p style={{ color: "red" }}>All fields Are Required!</p>}
             </form> 
             <p>Already have an account? Sign in <a href='http://localhost:3000/login'>here</a></p>
             

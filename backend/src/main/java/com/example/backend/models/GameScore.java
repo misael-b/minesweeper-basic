@@ -3,6 +3,7 @@ package com.example.backend.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,6 +13,8 @@ public class GameScore {
     @Id
     @GeneratedValue
     private int id;
+
+    @NotNull
     private double score;
 
     public GameScore() {
